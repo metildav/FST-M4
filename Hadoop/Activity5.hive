@@ -1,0 +1,42 @@
+-- Create and use new database
+CREATE DATABASE office;
+show databases;
+use office;
+show tables;
+
+--  create employee table
+CREATE TABLE employee
+(id INT, name STRING, dept STRING, yoj INT, salary INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+TBLPROPERTIES("skip.header.line.count"="1");
+
+--load data into employee table
+LOAD DATA LOCAL INPATH '/root/EmpData.csv' INTO TABLE employee;
+
+-- Run queries in employee table
+SELECT * FROM employee;
+SELECT COUNT(*) FROM employee;
+
+
+-- Exports to HDFS directory
+INSERT OVERWRITE DIRECTORY '/user/jeyanthi/HiveOutput'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM employee WHERE dept='IT';
+
+-- to view output in hdfs
+dfs -cat /user/jeyanthi/HiveOutput/000000_0;
+
+-- Exports to Local directory
+INSERT OVERWRITE LOCAL DIRECTORY '/root/HiveOutput'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM employee WHERE dept='IT';
+
+-- to view output in local
+cat /root/HiveOutput/000000_0;
+
+-- to store output in csv
+cat /root/HiveOutput/000000_0 > /root/HiveOutput/Output.csv
+
+
+
