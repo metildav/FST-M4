@@ -1,0 +1,2 @@
+--Activity2
+SELECT COUNT(*) FROM episodeIV WHERE INSTR(line, 'Luke')>0;
